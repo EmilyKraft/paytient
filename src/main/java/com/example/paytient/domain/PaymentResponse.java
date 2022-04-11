@@ -7,7 +7,8 @@ import lombok.Data;
 @Data
 public class PaymentResponse {
 
-    private double updatedBalance;
+    private String updatedBalance;
     private LocalDate dueDate;
+    private String notes;
     
 }

@@ -2,7 +2,6 @@ package com.example.paytient.utils;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.time.temporal.TemporalAdjusters;
 
 import org.springframework.stereotype.Component;
@@ -11,22 +10,23 @@ import org.springframework.stereotype.Component;
 public class PaymentUtils {
 
     public double computeMatchAmount(double paymentAmount) {
+        double matchAmount;
         if (paymentAmount < 10) {
-            return paymentAmount * .01;
+            matchAmount = paymentAmount * .01;
         } else if (paymentAmount < 50) {
-            return paymentAmount * .03;
-        } else
-            return paymentAmount * .05;
+            matchAmount = paymentAmount * .03;
+        } else {
+            matchAmount = paymentAmount * .05;
+        }
+        double roundedMatch = Math.round(matchAmount * 100.0) / 100.0;
+        return roundedMatch;
     }
 
     public LocalDate computeDueDate() {
         LocalDate date = LocalDate.now();
         LocalDate dueDate = date.plusDays(15);
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM-dd-yyyy");
-        System.out.println(dueDate.format(formatter));
         if (DayOfWeek.SUNDAY.equals(dueDate.getDayOfWeek()) || DayOfWeek.SATURDAY.equals(dueDate.getDayOfWeek())) {
             LocalDate followingMonday = dueDate.with(TemporalAdjusters.next(DayOfWeek.MONDAY));
-            System.out.println(followingMonday.format(formatter));
             return followingMonday;
         } else
             return dueDate;
